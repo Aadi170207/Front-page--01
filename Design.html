@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StellerX - Welcome to Your Next Big Project</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        /* Custom 3D Tilt & Glow Effects */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .glow-effect:hover {
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.35);
+        }
+        /* Typewriter Cursor */
+        .cursor-blink {
+            display: inline-block;
+            width: 3px;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen flex flex-col justify-between overflow-x-hidden">
+
+    <!-- ================= NAVBAR ================= -->
+    <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-white/80 dark:bg-gray-900/80 border-b border-gray-200/50 dark:border-gray-800/50 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center space-x-2 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">
+                <span class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white text-lg font-bold shadow-md shadow-brand-500/30">S</span>
+                <span>StellerX</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-8 font-medium text-sm text-gray-600 dark:text-gray-300">
+                <a href="#hero" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Home</a>
+                <a href="#features" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Service</a>
+                <a href="#demo" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Demo</a>
+                <a href="#faq" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Contact</a>
+            </nav>
+            <!-- Actions & Theme Toggle -->
+            <div class="flex items-center space-x-3">
+                <!-- Cmd+K Search Button -->
+                <button onclick="openSearchModal()" class="hidden sm:flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-400 text-xs px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 transition-all">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>Search...</span>
+                    <kbd class="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded px-1.5 py-0.5 text-[10px] font-semibold text-gray-600 dark:text-gray-300 shadow-sm">⌘K</kbd>
+                </button>
+
+                <!-- Search icon for mobile -->
+                <button onclick="openSearchModal()" class="sm:hidden p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800" title="Search" aria-label="Search">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    <span class="sr-only">Search</span>
+                </button>
+
+                <!-- Light/Dark Mode Switcher -->
+                <button id="themeToggle" onclick="toggleDarkMode()" class="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none transition-colors" title="Toggle Theme">
+                    <i id="themeIcon" class="fa-solid fa-moon text-lg"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section id="hero" class="relative bg-gradient-to-b from-brand-700 via-brand-600 to-brand-800 text-white py-24 md:py-32 overflow-hidden">
+        <!-- Interactive Particle Canvas Background -->
+        <canvas id="heroCanvas" class="absolute inset-0 w-full h-full pointer-events-none opacity-40"></canvas>
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+            <!-- Dynamic Typewriter Title -->
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight min-h-[3.5rem]">
+                Welcome to Your Next <span id="typewriter" class="text-blue-200 underline decoration-brand-400 decoration-4 underline-offset-8"></span><span class="cursor-blink">|</span>
+            </h1>
+
+            <p class="text-lg sm:text-xl text-blue-100 max-w-2xl mx-auto font-normal mb-10 leading-relaxed">
+                A clean, modern template ready to be customized for your website or web application with high performance and interactive components.
+            </p>
+
+            <!-- Hero Action Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <button onclick="triggerRipple(event)" class="relative overflow-hidden w-full sm:w-auto px-8 py-3.5 bg-white text-brand-700 hover:bg-blue-50 font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all">
+                    Get Started
+                </button>
+                <button onclick="openDemoModal()" class="w-full sm:w-auto px-8 py-3.5 bg-brand-800/60 hover:bg-brand-800/90 text-white font-semibold rounded-xl border border-brand-400/30 backdrop-blur-sm flex items-center justify-center space-x-2 transition-all">
+                    <i class="fa-solid fa-circle-play text-brand-300"></i>
+                    <span>Watch Demo</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FEATURE CARDS SECTION ================= -->
+    <section id="features" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- Feature 1: Fast Performance -->
+            <div onclick="openFeatureModal('Fast Performance', 'Optimized specifically for fast initial loads, lightning response times, and smooth 60fps user interaction across all screen sizes.', 'fa-bolt')" 
+                 class="tilt-card glow-effect bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-8 rounded-2xl cursor-pointer hover:border-brand-500 dark:hover:border-brand-500 transition-all shadow-sm hover:shadow-xl">
+                <div class="w-14 h-14 rounded-xl bg-blue-100 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400 flex items-center justify-center text-2xl mb-6">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-gray-900 dark:text-white">Fast Performance</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                    Optimized for quick load times and smooth user interaction across all devices with minimal dependencies.
+                </p>
+                <div class="mt-6 flex items-center text-brand-600 dark:text-brand-400 font-semibold text-sm group">
+                    <span>Learn more</span>
+                    <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </div>
+
+            <!-- Feature 2: Responsive Layout -->
+            <div onclick="openFeatureModal('Responsive Layout', 'Built from the ground up using dynamic fluid layouts, modern Tailwind grid systems, and touch-optimized interfaces.', 'fa-mobile-screen-button')" 
+                 class="tilt-card glow-effect bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-8 rounded-2xl cursor-pointer hover:border-brand-500 dark:hover:border-brand-500 transition-all shadow-sm hover:shadow-xl">
+                <div class="w-14 h-14 rounded-xl bg-blue-100 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400 flex items-center justify-center text-2xl mb-6">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-gray-900 dark:text-white">Responsive Layout</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                    Designed to fit seamlessly on desktops, tablets, and mobile screens with adaptive fluid scaling.
+                </p>
+                <div class="mt-6 flex items-center text-brand-600 dark:text-brand-400 font-semibold text-sm group">
+                    <span>Learn more</span>
+                    <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </div>
+            <!-- Feature 3: Easy Integration -->
+            <div onclick="openFeatureModal('Easy Integration', 'Plug-and-play code snippets with modular architecture, compatible with React, Vue, Angular, or plain HTML/JS.', 'fa-plug')" 
+                 class="tilt-card glow-effect bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 p-8 rounded-2xl cursor-pointer hover:border-brand-500 dark:hover:border-brand-500 transition-all shadow-sm hover:shadow-xl">
+                <div class="w-14 h-14 rounded-xl bg-blue-100 dark:bg-brand-900/40 text-brand-600 dark:text-brand-400 flex items-center justify-center text-2xl mb-6">
+                    <i class="fa-solid fa-plug"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3 text-gray-900 dark:text-white">Easy Integration</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
+                    Simple structure that easily hooks into backend services, APIs, or modern frontend frameworks.
+                </p>
+                <div class="mt-6 flex items-center text-brand-600 dark:text-brand-400 font-semibold text-sm group">
+                    <span>Learn more</span>
+                    <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- ================= INTERACTIVE DEMO CODE SWITCHER ================= -->
+    <section id="demo" class="py-16 bg-gray-100/60 dark:bg-gray-900/40 border-y border-gray-200 dark:border-gray-800">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">Interactive Live Playground</h2>
+                <p class="text-gray-600 dark:text-gray-400 text-sm mt-2">Explore modular code snippets ready for your stack.</p>
+            </div>
+            <!-- Code Playground Container -->
+            <div class="bg-gray-900 rounded-2xl overflow-hidden shadow-2xl border border-gray-800">
+                <!-- Header Tabs -->
+                <div class="flex items-center justify-between px-6 py-4 bg-gray-950/80 border-b border-gray-800">
+                    <div class="flex space-x-2">
+                        <button onclick="switchTab('html')" id="tab-html" class="px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-brand-600 transition-all">HTML / Tailwind</button>
+                        <button onclick="switchTab('react')" id="tab-react" class="px-4 py-1.5 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition-all">React JSX</button>
+                        <button onclick="switchTab('api')" id="tab-api" class="px-4 py-1.5 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition-all">API Endpoint</button>
+                    </div>
+                    <button onclick="copyCode()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded-md flex items-center space-x-2 transition-colors">
+                        <i id="copyIcon" class="fa-regular fa-copy"></i>
+                        <span id="copyText">Copy Code</span>
+                    </button>
+                </div>
+                <!-- Code Box -->
+                <div class="p-6 font-mono text-xs sm:text-sm text-gray-300 overflow-x-auto">
+                    <pre id="codeBlock"><code>&lt;div class="hero-card p-6 bg-blue-600 text-white rounded-xl"&gt;
+  &lt;h1 class="text-2xl font-bold"&gt;Welcome to Himu Template&lt;/h1&gt;
+  &lt;p class="text-sm opacity-90"&gt;Ready to build your next big project.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ================= FAQ ACCORDION SECTION ================= -->
+    <section id="faq" class="py-20 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white">Frequently Asked Questions</h2>
+            <p class="text-gray-600 dark:text-gray-400 text-sm mt-2">Everything you need to get started with StellerX.</p>
+        </div>
+
+        <div class="space-y-4">
+            <!-- FAQ Item 1 -->
+            <div class="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden bg-white dark:bg-gray-900">
+                <button onclick="toggleFaq(1)" class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"><span>How easy is it to customize this template?</span>
+                    <i id="faq-icon-1" class="fa-solid fa-chevron-down text-sm transition-transform duration-300"></i>
+                </button>
+                <div id="faq-answer-1" class="hidden px-6 py-4 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-gray-800">
+                    Extremely easy! The layout uses standardized Tailwind CSS classes and modular structure, making it simple to tweak colors, typography, and components.
+                </div>
+            </div>
+<!-- FAQ Item 2 -->
+            <div class="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden bg-white dark:bg-gray-900">
+                <button onclick="toggleFaq(2)" class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                    <span>Does it support Dark Mode out of the box?</span>
+                    <i id="faq-icon-2" class="fa-solid fa-chevron-down text-sm transition-transform duration-300"></i>
+                </button>
+                <div id="faq-answer-2" class="hidden px-6 py-4 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-gray-800">
+                    Yes! Dark mode is fully integrated with system preferences support and manual toggle persistence using localStorage.
+                </div>
+            </div>
+
+            <!-- FAQ Item 3 -->
+            <div class="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden bg-white dark:bg-gray-900">
+                <button onclick="toggleFaq(3)" class="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                    <span>What technologies can I integrate with?</span>
+                    <i id="faq-icon-3" class="fa-solid fa-chevron-down text-sm transition-transform duration-300"></i>
+                </button>
+                <div id="faq-answer-3" class="hidden px-6 py-4 text-sm text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-gray-800">
+                    You can integrate this front-end with any REST or GraphQL backend, Node.js, Python, Ruby, PHP, or framework like Next.js, Nuxt, or Laravel.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-900 py-8 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-gray-500 dark:text-gray-400">
+            <p>&copy; 2026 StellerX. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ================= MODALS & OVERLAYS ================= -->
+
+    <!-- Search Modal (Cmd + K) -->
+    <div id="searchModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-start justify-center pt-20 px-4">
+        <div class="bg-white dark:bg-gray-900 w-full max-w-xl rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-800 flex items-center space-x-3">
+                <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                <input id="searchInput" type="text" placeholder="Type a command or search..." class="w-full bg-transparent text-gray-900 dark:text-white focus:outline-none text-sm">
+                <button onclick="closeSearchModal()" class="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">ESC</button>
+            </div>
+            <div class="p-4 space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                <div onclick="navigateTo('hero')" class="p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer flex items-center justify-between">
+                    <span><i class="fa-solid fa-house mr-3 text-brand-500"></i> Go to Home</span>
+                    <span class="text-xs text-gray-400">Navigation</span>
+                </div>
+                <div onclick="navigateTo('features')" class="p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer flex items-center justify-between">
+                    <span><i class="fa-solid fa-cube mr-3 text-brand-500"></i> View Features</span>
+                    <span class="text-xs text-gray-400">Section</span>
+                </div>
+                <div onclick="toggleDarkMode(); closeSearchModal();" class="p-2.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer flex items-center justify-between">
+                    <span><i class="fa-solid fa-circle-half-stroke mr-3 text-brand-500"></i> Toggle Light/Dark Mode</span>
+                    <span class="text-xs text-gray-400">Action</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Demo Modal -->
+    <div id="demoModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-gray-900 w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl relative border border-gray-800">
+            <button type="button" onclick="closeDemoModal()" aria-label="Close demo modal" title="Close demo modal" class="absolute top-4 right-4 text-white/70 hover:text-white text-xl z-10 w-8 h-8 flex items-center justify-center rounded-full bg-black/40">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+            <div class="aspect-video w-full flex items-center justify-center bg-gray-950">
+                <!-- Demo Video Placeholder -->
+                <div class="text-center p-8">
+                    <i class="fa-solid fa-circle-play text-6xl text-brand-500 mb-4 animate-pulse"></i>
+                    <p class="text-white font-semibold text-lg">Interactive Video Demo</p>
+                    <p class="text-gray-400 text-sm mt-1">Demonstrating modern feature customization and template setup.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Detail Modal -->
+    <div id="featureModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-900 w-full max-w-md rounded-2xl p-6 shadow-2xl border border-gray-200 dark:border-gray-800 relative">
+            <button type="button" onclick="closeFeatureModal()" aria-label="Close feature details" title="Close feature details" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                <i class="fa-solid fa-xmark text-lg" aria-hidden="true"></i>
+            </button>
+            <div id="featureIconBox" class="w-12 h-12 rounded-xl bg-brand-100 text-brand-600 flex items-center justify-center text-xl mb-4">
+                <i id="featureModalIcon" class="fa-solid fa-info"></i>
+            </div>
+            <h3 id="featureModalTitle" class="text-xl font-bold text-gray-900 dark:text-white mb-2">Feature Detail</h3>
+            <p id="featureModalDesc" class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-6">Details about this feature...</p>
+            <button onclick="closeFeatureModal()" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-xl text-sm transition-colors">
+                Got it
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script>
+        // ---------------- 1. Dark Mode Toggle ----------------
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            const icon = document.getElementById('themeIcon');
+            if (isDark) {
+                icon.className = 'fa-solid fa-sun text-yellow-400 text-lg';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.className = 'fa-solid fa-moon text-lg';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+        // Initialize Theme from Storage
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            document.getElementById('themeIcon').className = 'fa-solid fa-sun text-yellow-400 text-lg';
+        }
+
+        // ---------------- 2. Typewriter Effect ----------------
+        const phrases = ["Big Project", "SaaS Idea", "Web Application", "Startup"];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typewriterEl = document.getElementById('typewriter');
+
+        function typeLoop() {
+            const currentPhrase = phrases[phraseIndex];
+            if (isDeleting) {
+                typewriterEl.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterEl.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                typeSpeed = 2000; // Pause at end
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(typeLoop, typeSpeed);
+        }
+        typeLoop();
+
+        // ---------------- 3. Interactive Particle Canvas Background ----------------
+        const canvas = document.getElementById('heroCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.alpha = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 40; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ---------------- 4. 3D Card Hover Tilt Effect ----------------
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                card.style.transform = `perspective(1000px) rotateX(${-y / 20}deg) rotateY(${x / 20}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+        });
+
+        // ---------------- 5. Search Palette (Cmd + K) ----------------
+        function openSearchModal() {
+            document.getElementById('searchModal').classList.remove('hidden');
+            document.getElementById('searchInput').focus();
+        }
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.add('hidden');
+        }
+        document.addEventListener('keydown', e => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+            if (e.key === 'Escape') closeSearchModal();
+        });
+        function navigateTo(id) {
+            closeSearchModal();
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ---------------- 6. Modals (Demo & Feature) ----------------
+        function openDemoModal() {
+            document.getElementById('demoModal').classList.remove('hidden');
+        }
+        function closeDemoModal() {
+            document.getElementById('demoModal').classList.add('hidden');
+        }
+
+        function openFeatureModal(title, desc, iconClass) {
+            document.getElementById('featureModalTitle').textContent = title;
+            document.getElementById('featureModalDesc').textContent = desc;
+            document.getElementById('featureModalIcon').className = `fa-solid ${iconClass}`;
+            document.getElementById('featureModal').classList.remove('hidden');
+        }
+        function closeFeatureModal() {
+            document.getElementById('featureModal').classList.add('hidden');
+        }
+
+        // ---------------- 7. Interactive Code Switcher ----------------
+        const codeSnippets = {
+            html: `<div class="hero-card p-6 bg-blue-600 text-white rounded-xl">\n  <h1 class="text-2xl font-bold">Welcome to StellerX Template</h1>\n  <p class="text-sm opacity-90">Ready to build your next big project.</p>\n</div>`,
+            react: `export default function Hero() {\n  return (\n    <div class="p-6 bg-blue-600 text-white rounded-xl">\n      <h1 class="text-2xl font-bold">Welcome to StellerX</h1>\n    </div>\n  );\n}`,
+            api: `// GET /api/v1/project-info\n{\n  "status": "success",\n  "message": "Template initialized",\n  "version": "2026.1.0"\n}`
+        };
+
+        function switchTab(tab) {
+            ['html', 'react', 'api'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tab) {
+                    btn.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-brand-600 transition-all';
+                } else {
+                    btn.className = 'px-4 py-1.5 rounded-lg text-xs font-semibold text-gray-400 hover:text-white transition-all';
+                }
+            });
+            document.getElementById('codeBlock').querySelector('code').textContent = codeSnippets[tab];
+        }
+
+        function copyCode() {
+            const textToCopy = document.getElementById('codeBlock').innerText;
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const copyText = document.getElementById('copyText');
+            const copyIcon = document.getElementById('copyIcon');
+            copyText.textContent = 'Copied!';
+            copyIcon.className = 'fa-solid fa-check text-green-400';
+            setTimeout(() => {
+                copyText.textContent = 'Copy Code';
+                copyIcon.className = 'fa-regular fa-copy';
+            }, 2000);
+        }
+
+        // ---------------- 8. FAQ Accordion ----------------
+        function toggleFaq(id) {
+            const answer = document.getElementById(`faq-answer-${id}`);
+            const icon = document.getElementById(`faq-icon-${id}`);
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                answer.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // ---------------- 9. Ripple Effect for Primary Button ----------------
+        function triggerRipple(event) {
+            const btn = event.currentTarget;
+            const circle = document.createElement('span');
+            const diameter = Math.max(btn.clientWidth, btn.clientHeight);
+            const radius = diameter / 2;
+
+            circle.style.width = circle.style.height = `${diameter}px`;
+            circle.style.left = `${event.clientX - btn.getBoundingClientRect().left - radius}px`;
+            circle.style.top = `${event.clientY - btn.getBoundingClientRect().top - radius}px`;
+            circle.classList.add('absolute', 'rounded-full', 'bg-brand-500/30', 'animate-ping', 'pointer-events-none');
+
+            const ripple = btn.getElementsByClassName('ripple')[0];
+            if (ripple) ripple.remove();
+
+            btn.appendChild(circle);
+        }
+    </script>
+</body>
+</html>
